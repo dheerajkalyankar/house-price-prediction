@@ -67,11 +67,21 @@ class DataTransformation:
         val_df = pd.read_csv(self.val_path)
 
         # Split features and target
-        X_train = train_df.drop("SalePrice", axis=1)
-        y_train = train_df["SalePrice"]
+        target_column = "SalePrice"
 
-        X_val = val_df.drop("SalePrice", axis=1)
-        y_val = val_df["SalePrice"]
+        X_train = train_df.drop(columns=[target_column])
+        y_train = train_df[target_column]
+
+        X_val = val_df.drop(columns=[target_column])
+        y_val = val_df[target_column]
+
+        import joblib
+        joblib.dump(
+            X_train.columns.tolist(),
+            "artifacts/data_transformation/feature_names.pkl"
+        )
+
+
 
         # Create preprocessor
         preprocessor = self.get_preprocessor(train_df)
