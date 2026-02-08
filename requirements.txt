@@ -4,5 +4,7 @@ pandas
 numpy
 scikit-learn
 joblib
-streamlit
+requests
+streamlit==1.19.0
+altair==4.2.2
 requests
