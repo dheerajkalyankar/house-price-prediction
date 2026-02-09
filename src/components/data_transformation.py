@@ -9,6 +9,32 @@ from sklearn.impute import SimpleImputer
 
 import joblib
 
+SELECTED_FEATURES = [
+    "OverallQual",
+    "GrLivArea",
+    "GarageCars",
+    "TotalBsmtSF",
+    "YearBuilt",
+    "Neighborhood",
+    "LotArea",
+    "KitchenQual",
+    "ExterQual",
+    "BsmtQual",
+    "FullBath",
+    "TotRmsAbvGrd"
+]
+
+numerical_features = [
+    "OverallQual", "GrLivArea", "TotalBsmtSF",
+    "LotArea", "YearBuilt", "GarageCars",
+    "TotRmsAbvGrd", "FullBath"
+]
+
+categorical_features = [
+    "BsmtQual", "KitchenQual",
+    "Neighborhood", "ExterQual"
+]
+
 
 class DataTransformation:
     def __init__(self):
@@ -25,12 +51,19 @@ class DataTransformation:
         Creates preprocessing pipeline for numerical and categorical features
         """
 
-        # Separate feature types
-        numerical_features = df.select_dtypes(include=["int64", "float64"]).columns
-        categorical_features = df.select_dtypes(include=["object"]).columns
+        # # Separate feature types
+        # numerical_features = [
+        #     col for col in SELECTED_FEATURES
+        # if df[col].dtype in ["int64", "float64"]
+        # ]
 
-        # Remove target if present
-        numerical_features = numerical_features.drop("SalePrice")
+        # categorical_features = [
+        #     col for col in SELECTED_FEATURES
+        #      if df[col].dtype == "object"
+        # ]
+
+        # # Remove target if present
+        # numerical_features = numerical_features.drop("SalePrice")
 
         # Numerical pipeline
         num_pipeline = Pipeline(
@@ -69,17 +102,18 @@ class DataTransformation:
         # Split features and target
         target_column = "SalePrice"
 
-        X_train = train_df.drop(columns=[target_column])
+        X_train = train_df[SELECTED_FEATURES]
         y_train = train_df[target_column]
 
-        X_val = val_df.drop(columns=[target_column])
+        X_val = val_df[SELECTED_FEATURES]
         y_val = val_df[target_column]
 
-        import joblib
+
         joblib.dump(
-            X_train.columns.tolist(),
-            "artifacts/data_transformation/feature_names.pkl"
+        SELECTED_FEATURES,
+        "artifacts/data_transformation/feature_names.pkl"
         )
+
 
 
 

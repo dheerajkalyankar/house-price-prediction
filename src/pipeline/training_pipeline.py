@@ -19,7 +19,8 @@ class TrainingPipeline:
 
         # 3. Model Training
         trainer = ModelTrainer()
-        model_path = trainer.initiate_model_trainer()
+        model_path = trainer.initiate_model_training()
+
 
         print("✅ Training Pipeline Completed Successfully")
         return model_path
